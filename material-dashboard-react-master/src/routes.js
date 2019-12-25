@@ -22,7 +22,7 @@ import RTLPage from "views/RTLPage/RTLPage.jsx";
 const dashboardRoutes = [
   {
     path: "/dashboard",
-    name: "Daily Works",
+    name: "Daily Work",
     rtlName: "لوحة القيادة",
     icon: Dashboard,
     component: DashboardPage,

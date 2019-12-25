@@ -6,6 +6,7 @@
   "main": "dist/index.js",
   "dependencies": {
     "@khanacademy/react-multi-select": "^0.3.3",
+    "@lls/react-light-calendar": "^2.0.7",
     "@material-ui/core": "3.9.2",
     "@material-ui/icons": "3.0.2",
     "@progress/kendo-react-dropdowns": "^3.4.1",
@@ -32,6 +33,7 @@
     "react-dropdown-multiselect": "^1.0.0",
     "react-dropdown-tree-select": "^2.1.1",
     "react-google-maps": "9.4.5",
+    "react-light-calendar": "^1.0.3",
     "react-multiple-select-dropdown": "^2.0.0",
     "react-multiselect-checkboxes": "^0.1.1",
     "react-notification-alert": "0.0.12",

@@ -24,6 +24,7 @@ class Register extends Component{
     this.state = {
       labourer_id: null,
       work_assignmt: null,
+      status: null,
       amount: null,
       field: null,
       division:null,
@@ -50,7 +51,7 @@ class Register extends Component{
     let errors = this.state.errors;
           
     switch (name) {
-      case 'text1': 
+      case 'labourer_id': 
         errors.labourer_id = 
           value.length < 0
             ?'ID must be 4 characters long!'
@@ -101,25 +102,43 @@ class Register extends Component{
   }
 
 
+  handleBack = () => {
+    window.location.replace("/conductor/ConductorDailyWork");
+  
+  }
+   
+
   fetchData = async (date, division, field, labourer_id) => {
     console.log('OK')
     await firebase.database().ref("Daily Work Data").child(date).child(division).child(field).child(labourer_id).once('value', (snapshot) => {
       this.setState({
         work_assignmt: snapshot.val().work_assignmt,
+
         Ready: true,
       })
     })
   }
 
   handleSubmit = () => {
-    const { division,field, labourer_id, amount } = this.state;
+    const { division,field, labourer_id, amount, status } = this.state;
     const date = this.getDate();
 
-    firebase.database().ref("Daily Work Data").child(date).child(division).child(field).child(labourer_id).update({
-      amount: parseInt(amount),
-    })
-    .then(() => alert("success"))
-    .catch(() => alert("fail"))
+    if(status) {
+      firebase.database().ref("Daily Work Data").child(date).child(division).child(field).child(labourer_id).update({
+        status: status,
+      })
+      .then(() => alert("success"))
+      .catch(() => alert("fail"))
+    }
+    else {
+      firebase.database().ref("Daily Work Data").child(date).child(division).child(field).child(labourer_id).update({
+        amount: parseInt(amount),
+      })
+      .then(() => alert("success"))
+      .catch(() => alert("fail"))
+    }
+
+    
   }
 
   getDate = () => {
@@ -151,6 +170,8 @@ class Register extends Component{
       style={{
         backgroundImage: `linear-gradient(0deg,rgba(20,100,20,0.5), rgba(9, 93, 225, 0.0)),url(${carfix})`
       }}>
+
+
     <div className="wrapper">
   <h1 className="title">Evening Summery</h1>
 
@@ -204,7 +225,7 @@ class Register extends Component{
       </div>
       : null}
 
-       {this.state.Ready ?
+      {this.state.Ready ?
       <div className="field">
       <label className="label"></label>
       <div className="field">
@@ -222,7 +243,17 @@ class Register extends Component{
       </div>
       : null}
 
-      {this.state.Ready ?
+      {this.state.Ready && this.state.work_assignmt != 'Plucking' ?
+      <div classname="input">
+        <select className="input" value = {this.state.status} onChange={(event) => this.setState({ status: event.target.value })}>
+          <option value="None"> </option>
+          <option value="Completed">Completed</option>
+          <option value="Not Completed">Not Completed</option>
+        </select>
+      </div>
+      : null}
+
+      {this.state.Ready && this.state.work_assignmt == 'Plucking' ?
       <div className="field">
         <label className="label" ></label>
         <div className="field">
@@ -248,7 +279,8 @@ class Register extends Component{
 
       
       </form>
-      
+      <button type="submit" className="back" onClick={this.handleBack}>Back</button>
+            
       </div>
     </div>
     
